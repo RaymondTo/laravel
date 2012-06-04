@@ -219,14 +219,18 @@ class Config {
 	 */
 	protected static function paths($bundle)
 	{
-		$paths[] = Bundle::path($bundle).'config/';
-
+		$paths = array(
+			Bundle::path($bundle).'config/',
+			path('bundle').'config/'.$bundle.'/'
+		);
+		
 		// Configuration files can be made specific for a given environment. If an
 		// environment has been set, we will merge the environment configuration
 		// in last, so that it overrides all other options.
 		if ( ! is_null(Request::env()))
 		{
-			$paths[] = $paths[count($paths) - 1].Request::env().'/';
+			$paths[] = $paths[0].Request::env().'/';
+			$paths[] = $paths[1].Request::env().'/';
 		}
 
 		return $paths;
